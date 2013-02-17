@@ -64,7 +64,17 @@ public class SimpleMap<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(Object key) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        Node cur = head;
+        while (cur != null) {
+            if (cur.Key.compareTo(key) == 0)
+                return true;
+            if (cur.Key.compareTo(key) < 0)
+                cur = cur.Left;
+            else
+                cur = cur.Right;
+        }
+
+        return false;
     }
 
     /**
