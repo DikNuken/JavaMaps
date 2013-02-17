@@ -268,6 +268,7 @@ public class SimpleMap<K extends Comparable, V> implements Map<K, V> {
     @Override
     public void clear() {
         head = null;
+        _size = 0;
     }
 
     /**
