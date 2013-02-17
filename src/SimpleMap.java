@@ -253,7 +253,9 @@ public class SimpleMap<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
     /**
