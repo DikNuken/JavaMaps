@@ -267,7 +267,7 @@ public class SimpleMap<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public void clear() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        head = null;
     }
 
     /**
