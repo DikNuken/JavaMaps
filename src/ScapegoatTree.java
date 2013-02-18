@@ -1,6 +1,4 @@
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Project: simpleMap
@@ -51,6 +49,32 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
         boolean a = sizeOf(node.Left) <= (_alpha * size_of_x);
         boolean b = sizeOf(node.Right) <= (_alpha * size_of_x);
         return a && b;
+    }
+
+    private List<Node> flatten(Node node) {
+        List<Node> result = new LinkedList<Node>();
+        if (node == null)
+            return result;
+        result.addAll(flatten(node.Left));
+        result.add(node);
+        result.addAll(flatten(node.Right));
+        return result;
+    }
+
+    private Node buildTreeFromSortedList(List<Node> nodes, int start, int end) {
+        if (start > end)
+            return null;
+        int mid = (int) Math.ceil(start + (end - start) / 2.0);
+        Node node = new Node(nodes.get(mid).Key, nodes.get(mid).Value);
+
+        node.Left = buildTreeFromSortedList(nodes, start, mid - 1);
+        node.Right = buildTreeFromSortedList(nodes, mid + 1, end);
+        return node;
+    }
+
+    private Node RebuildTree(Node root, int length) {
+        List<Node> nodes = flatten(root);
+        return buildTreeFromSortedList(nodes, 0, length - 1);
     }
 
     public ScapegoatTree(double alpha) {
@@ -180,6 +204,52 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public V put(K key, V value) {
+        Node current = _root;
+        Node insertNode = null;
+        Node insert = new Node(key, value);
+        int depth = 0;
+        List<Node> parents = new LinkedList<Node>();
+        while (current != null) {
+            parents.add(0, current);
+            insertNode = current;
+            int comp = current.Key.compareTo(key);
+            if (comp == 0) {
+                V result = current.Value;
+                current.Value = value;
+                return result;
+            }
+            if (comp < 0)
+                current = current.Left;
+            else
+                current = current.Right;
+            depth++;
+        }
+        if (insertNode == null)
+            _root = insert;
+        else if (insertNode.Key.compareTo(key) < 0)
+            insertNode.Left = insert;
+        else
+            insertNode.Right = insert;
+
+        _size++;
+        _max_size = Math.max(_size, _max_size);
+
+        if (isDeep(depth)) {       //Если слишком глубокое то начинаем магию
+            Node scapegoat = null;
+            parents.add(0, insert);
+            int[] sizes = new int[parents.size()];
+            int I = 0;
+            for (int i = 1; i < parents.size(); i++) {
+                sizes[i] = sizes[i - 1] + sizeOf(brotherOf(parents.get(i - 1), parents.get(i))) + 1;
+                if (!isAWeightBalanced(parents.get(i), sizes[i] + 1)) {
+                    scapegoat = parents.get(i);
+                    I = i;
+                }
+            }
+            scapegoat = RebuildTree(scapegoat, sizes[I] + 1);
+
+
+        }
 
         return null;
     }
