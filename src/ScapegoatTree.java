@@ -90,7 +90,7 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public int size() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return _size;
     }
 
     /**
@@ -100,7 +100,7 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public boolean isEmpty() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return _size < 1;
     }
 
     /**
