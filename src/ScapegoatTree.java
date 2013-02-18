@@ -175,7 +175,17 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public V get(Object key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Node cur = _root;
+
+        while (cur != null) {
+            if (cur.Key.compareTo(key) == 0)
+                return cur.Value;
+            if (cur.Key.compareTo(key) < 0)
+                cur = cur.Left;
+            else
+                cur = cur.Right;
+        }
+        return null;
     }
 
     /**
