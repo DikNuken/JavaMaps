@@ -1,15 +1,14 @@
 import java.util.*;
 
 /**
- * Project: simpleMap
- * Package: PACKAGE_NAME
- *  * User: DikNuken
+ * Project: Maps
+ * User: DikNuken
  * Date: 18.02.13
  * Time: 16:51
  */
 public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
     private class Node {
-        public final K Key;
+        public K Key;
         public V Value;
         public Node Left;
         public Node Right;
@@ -222,13 +221,13 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
         while (current != null) {
             parents.add(0, current);
             insertNode = current;
-            int comp = current.Key.compareTo(key);
-            if (comp == 0) {
+            int cmp = current.Key.compareTo(key);
+            if (cmp == 0) {
                 V result = current.Value;
                 current.Value = value;
                 return result;
             }
-            if (comp < 0)
+            if (cmp < 0)
                 current = current.Left;
             else
                 current = current.Right;
@@ -296,7 +295,61 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public V remove(Object key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Node current = _root;
+        Node node = null;
+        V returnValue = null;
+        while (current != null) {
+
+            int cmp = current.Key.compareTo(key);
+            if (cmp == 0) {
+                node = current;
+                break;
+            }
+            if (cmp < 0)
+                current = current.Left;
+            else
+                current = current.Right;
+        }
+        if (current == null)
+            return null;
+
+        if (current.Right == null) {
+            if (node == null) {
+                _root = current.Left;
+            } else {
+                if (current == node.Left) {
+                    node.Left = current.Left;
+                } else {
+                    node.Right = current.Left;
+                }
+            }
+        } else {
+            Node min = current.Right;
+            node = null;
+            while (min.Left != null) {
+                node = min;
+                min = min.Left;
+            }
+            if (node != null) {
+                node.Left = min.Left;
+            } else {
+                current.Right = min.Right;
+            }
+
+            returnValue = current.Value;
+
+            current.Key = min.Key;
+            current.Value = min.Value;
+            _size--;
+            if (_size < _alpha * _max_size) {
+
+                _root = RebuildTree(_root, _size);
+                _max_size = _size;
+            }
+        }
+
+
+        return returnValue;
     }
 
     /**
