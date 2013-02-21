@@ -13,7 +13,7 @@ import java.util.TreeMap;
  */
 
 public class MapTests extends Assert {
-    private Map<Integer, Integer> testMap = new ScapegoatTree<Integer, Integer>(0.3);
+    private Map<Integer, Integer> testMap = new ScapegoatTree<Integer, Integer>(0.1);
     private Map<Integer, Integer> controlMap = new TreeMap<Integer, Integer>();
     Integer[] values;
     Integer[] keys;
@@ -21,7 +21,7 @@ public class MapTests extends Assert {
     @Before
     public void generateData() {
         Random random = new Random();
-        int size = random.nextInt(1000);
+        int size = 100;
         values = new Integer[size];
         keys = new Integer[size];
         for (int i = 0; i < size; i++) {

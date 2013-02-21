@@ -8,10 +8,10 @@ import java.util.*;
  */
 public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
     private class Node {
-        public K Key;
-        public V Value;
-        public Node Left;
-        public Node Right;
+        private K Key;
+        private V Value;
+        private Node Left;
+        private Node Right;
 
         public Node(K key, V value) {
             Key = key;
@@ -121,7 +121,17 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(Object key) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        Node cur = _root;
+
+        while (cur != null) {
+            if (cur.Key.compareTo(key) == 0)
+                return true;
+            if (cur.Key.compareTo(key) < 0)
+                cur = cur.Left;
+            else
+                cur = cur.Right;
+        }
+        return false;
     }
 
     /**
@@ -385,7 +395,9 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public void clear() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        _root = null;
+        _size = 0;
+        _max_size = 0;
     }
 
     /**
