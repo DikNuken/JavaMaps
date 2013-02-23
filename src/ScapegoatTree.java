@@ -51,7 +51,7 @@ public class ScapegoatTree<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     private List<Node> flatten(Node node) {
-        List<Node> result = new LinkedList<Node>();
+        List<Node> result = new ArrayList<Node>();
         if (node == null)
             return result;
         result.addAll(flatten(node.Left));
@@ -235,7 +235,7 @@ public class ScapegoatTree<K extends Comparable<K>, V> implements Map<K, V> {
         Node insertNode = null;
         Node insert = new Node(key, value);
         int depth = 0;
-        List<Node> parents = new LinkedList<Node>();
+        List<Node> parents = new ArrayList<Node>();
         while (current != null) {
             parents.add(0, current);
             insertNode = current;
