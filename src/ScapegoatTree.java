@@ -6,7 +6,7 @@ import java.util.*;
  * Date: 18.02.13
  * Time: 16:51
  */
-public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
+public class ScapegoatTree<K extends Comparable<K>, V> implements Map<K, V> {
     private class Node {
         private K Key;
         private V Value;
@@ -123,12 +123,13 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
     public boolean containsKey(Object key) {
         if (key == null)
             throw new NullPointerException();
+        K castKey = (K) key;
         Node cur = _root;
 
         while (cur != null) {
-            if (cur.Key.compareTo(key) == 0)
+            if (cur.Key.compareTo(castKey) == 0)
                 return true;
-            if (cur.Key.compareTo(key) < 0)
+            if (cur.Key.compareTo(castKey) < 0)
                 cur = cur.Left;
             else
                 cur = cur.Right;
@@ -188,12 +189,13 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
     public V get(Object key) {
         if (key == null)
             throw new NullPointerException();
+        K castKey = (K) key;
         Node cur = _root;
 
         while (cur != null) {
-            if (cur.Key.compareTo(key) == 0)
+            if (cur.Key.compareTo(castKey) == 0)
                 return cur.Value;
-            if (cur.Key.compareTo(key) < 0)
+            if (cur.Key.compareTo(castKey) < 0)
                 cur = cur.Left;
             else
                 cur = cur.Right;
@@ -313,12 +315,13 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
     public V remove(Object key) {
         if (key == null)
             throw new NullPointerException();
+        K castKey = (K) key;
         Node current = _root;
         Node node = null;
         V returnValue = null;
         while (current != null) {
 
-            int cmp = current.Key.compareTo(key);
+            int cmp = current.Key.compareTo(castKey);
             if (cmp == 0) {
                 node = current;
                 break;
