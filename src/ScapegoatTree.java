@@ -121,6 +121,8 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public boolean containsKey(Object key) {
+        if (key == null)
+            throw new NullPointerException();
         Node cur = _root;
 
         while (cur != null) {
@@ -184,6 +186,8 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public V get(Object key) {
+        if (key == null)
+            throw new NullPointerException();
         Node cur = _root;
 
         while (cur != null) {
@@ -223,6 +227,8 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public V put(K key, V value) {
+        if (key == null)
+            throw new NullPointerException();
         Node current = _root;
         Node insertNode = null;
         Node insert = new Node(key, value);
@@ -305,6 +311,8 @@ public class ScapegoatTree<K extends Comparable, V> implements Map<K, V> {
      */
     @Override
     public V remove(Object key) {
+        if (key == null)
+            throw new NullPointerException();
         Node current = _root;
         Node node = null;
         V returnValue = null;
