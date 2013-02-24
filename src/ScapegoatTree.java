@@ -76,6 +76,19 @@ public class ScapegoatTree<K extends Comparable<K>, V> implements Map<K, V> {
         return buildTreeFromSortedList(nodes, 0, length - 1);
     }
 
+    private Node bypassTree(K key) {
+        Node cur = _root;
+        while (cur != null) {
+            if (cur.Key.compareTo(key) == 0)
+                return cur;
+            if (cur.Key.compareTo(key) < 0)
+                cur = cur.Left;
+            else
+                cur = cur.Right;
+        }
+        return null;
+    }
+
     public ScapegoatTree(double alpha) {
         _alpha = alpha;
     }
@@ -124,17 +137,8 @@ public class ScapegoatTree<K extends Comparable<K>, V> implements Map<K, V> {
         if (key == null)
             throw new NullPointerException();
         K castKey = (K) key;
-        Node cur = _root;
+        return bypassTree(castKey) != null;
 
-        while (cur != null) {
-            if (cur.Key.compareTo(castKey) == 0)
-                return true;
-            if (cur.Key.compareTo(castKey) < 0)
-                cur = cur.Left;
-            else
-                cur = cur.Right;
-        }
-        return false;
     }
 
     /**
@@ -190,17 +194,8 @@ public class ScapegoatTree<K extends Comparable<K>, V> implements Map<K, V> {
         if (key == null)
             throw new NullPointerException();
         K castKey = (K) key;
-        Node cur = _root;
-
-        while (cur != null) {
-            if (cur.Key.compareTo(castKey) == 0)
-                return cur.Value;
-            if (cur.Key.compareTo(castKey) < 0)
-                cur = cur.Left;
-            else
-                cur = cur.Right;
-        }
-        return null;
+        Node result = bypassTree(castKey);
+        return result != null ? result.Value : null;
     }
 
     /**
